@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-server",
+            "type": "shell",
+            "command": "${workspaceFolder}/MinGW/bin/g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}/tictacserver.cpp",
+                "-o",
+                "${workspaceFolder}/tictacserver",
+                "-lws2_32"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build task for tictacserver"
+        },
+        {
+            "label": "build-client",
+            "type": "shell",
+            "command": "${workspaceFolder}/MinGW/bin/g++.exe",
+            "args": [
+                "-g",
+                "${workspaceFolder}/tictacclient.cpp",
+                "-o",
+                "${workspaceFolder}/tictacclient",
+                "-lws2_32"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build task for tictacclient"
+        },
+        {
+            "label": "build-all",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build-server",
+                "build-client"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
