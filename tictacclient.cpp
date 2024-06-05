@@ -161,15 +161,30 @@ class TicTacToeBoard {
         return playername;
     }
 
+    std::string checkOppositePlayerName() {
+        std::string playername = (playerTurn == 1) ? secondPlayer.getName() : firstPlayer.getName();
+        return playername;
+    }
+
     int checkCurrentPlayerID() {
         int playerID = (playerTurn == 1) ? firstPlayer.getID() : secondPlayer.getID();
         return playerID;
     }
 
-    void printWinner(){
+    int checkOppositePlayerID() {
+        int playerID = (playerTurn == 1) ? secondPlayer.getID() : firstPlayer.getID();
+        return playerID;
+    }
+
+    void printWinner(bool opposite = false){
         if (winningState){
-            std::cout << std::endl << "Player #" << checkCurrentPlayerID()
-            << ", " << checkCurrentPlayerName() << ", is the winner!" << std::endl;
+            if (!opposite) {
+                std::cout << std::endl << "Player #" << checkCurrentPlayerID()
+                << ", " << checkCurrentPlayerName() << ", is the winner!" << std::endl;
+            } else {
+                std::cout << std::endl << "Player #" << checkOppositePlayerID()
+                << ", " << checkOppositePlayerName() << ", is the winner!" << std::endl;
+            }
             printf("A straight line at square %d, %d, and %d!\n",
             winningSquares[0], winningSquares[1], winningSquares[2]);
         } else if (drawState){
@@ -240,15 +255,21 @@ void receiveMessages(SOCKET ConnectSocket) {
                 // }
                 // std::cout << "Receiving mark...";
                 publicBoard.placeMark(message);
+                publicBoard.checkWinner();
+                publicBoard.checkDraw();
             }
             std::cout << "\nReceived: " << message << std::endl;
             if (publicBoard.checkCurrentPlayerID() == clientPlayerID) {
-                std::cout << std::endl;
-                publicBoard.printTitle();
-                publicBoard.printBoard();
-                publicBoard.printCheckPlayer();
-                publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
-                std::cout << "Type a number to put your mark there: ";
+                if (!publicBoard.isGameOver()){
+                    std::cout << std::endl;
+                    publicBoard.printTitle();
+                    publicBoard.printBoard();
+                    publicBoard.printCheckPlayer();
+                    publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
+                    std::cout << "Type a number to put your mark there: ";
+                } else {
+                    publicBoard.printWinner(true);
+                }
             }
             // std::cout << "Enter message to send (type 'exit' to quit): ";
         } else if (iResult == 0) {
@@ -265,8 +286,8 @@ void receiveMessages(SOCKET ConnectSocket) {
 
 int main() {
     std::string markNumber;
-    Player player1("MJ", 1234, "@");
-    Player player2("Ether", 5345, "#");
+    Player player1("ServerPlayer", 1234, "O");
+    Player player2("ClientPlayer", 6969, "X");
     TicTacToeBoard board(player1, player2);
     publicBoard = board;
 
@@ -337,17 +358,20 @@ int main() {
 
     // Loop to send messages repeatedly
     while (running) {
-        std::cout << std::endl;
-        publicBoard.printTitle();
-        publicBoard.printBoard();
-        publicBoard.printCheckPlayer();
-        publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
-        if (publicBoard.checkCurrentPlayerID() == clientPlayerID) {
-            std::cout << "Type a number to put your mark there: ";
+        if (!publicBoard.isGameOver()){
+            std::cout << std::endl;
+            publicBoard.printTitle();
+            publicBoard.printBoard();
+            publicBoard.printCheckPlayer();
+            publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
+            if (publicBoard.checkCurrentPlayerID() == clientPlayerID) {
+                std::cout << "Type a number to put your mark there: ";
+            } else {
+                std::cout << "Wait for other player's turn     ";
+            }
         } else {
-            std::cout << "Wait for other player's turn     ";
+            publicBoard.printWinner(true);
         }
-
         // std::cout << "Enter message to send (type 'exit' to quit): ";
         std::getline(std::cin, sendbuf);
 
@@ -357,8 +381,10 @@ int main() {
         }
 
         if (publicBoard.checkCurrentPlayerID() == clientPlayerID) {
-            std::cout << "Placing mark...";
+            // std::cout << "Placing mark...";
             publicBoard.placeMark(sendbuf);
+            publicBoard.checkWinner();
+            publicBoard.checkDraw();
             int iResult = send(ConnectSocket, sendbuf.c_str(), (int)sendbuf.length(), 0);
             if (iResult == SOCKET_ERROR) {
                 std::cerr << "send failed: " << WSAGetLastError() << std::endl;

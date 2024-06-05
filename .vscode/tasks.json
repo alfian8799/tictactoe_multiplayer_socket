@@ -2,6 +2,20 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "kill-server",
+            "type": "shell",
+            "command": "taskkill",
+            "args": ["/F", "/IM", "tictacserver.exe"],
+            "problemMatcher": []
+        },
+        {
+            "label": "kill-client",
+            "type": "shell",
+            "command": "taskkill",
+            "args": ["/F", "/IM", "tictacclient.exe"],
+            "problemMatcher": []
+        },
+        {
             "label": "build-server",
             "type": "shell",
             "command": "${workspaceFolder}/MinGW/bin/g++.exe",
@@ -12,9 +26,8 @@
                 "${workspaceFolder}/tictacserver",
                 "-lws2_32"
             ],
-            "group": "build",
             "problemMatcher": ["$gcc"],
-            "detail": "Build task for tictacserver"
+            "dependsOn": ["kill-server"]
         },
         {
             "label": "build-client",
@@ -27,9 +40,8 @@
                 "${workspaceFolder}/tictacclient",
                 "-lws2_32"
             ],
-            "group": "build",
             "problemMatcher": ["$gcc"],
-            "detail": "Build task for tictacclient"
+            "dependsOn": ["kill-client"]
         },
         {
             "label": "build-all",
