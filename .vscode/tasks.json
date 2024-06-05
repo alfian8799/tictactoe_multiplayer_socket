@@ -1,20 +1,20 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "kill-server",
-            "type": "shell",
-            "command": "taskkill",
-            "args": ["/F", "/IM", "tictacserver.exe"],
-            "problemMatcher": []
-        },
-        {
-            "label": "kill-client",
-            "type": "shell",
-            "command": "taskkill",
-            "args": ["/F", "/IM", "tictacclient.exe"],
-            "problemMatcher": []
-        },
+        // {
+        //     "label": "kill-server",
+        //     "type": "shell",
+        //     "command": "taskkill",
+        //     "args": ["/F", "/IM", "tictacserver.exe"],
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "kill-client",
+        //     "type": "shell",
+        //     "command": "taskkill",
+        //     "args": ["/F", "/IM", "tictacclient.exe"],
+        //     "problemMatcher": []
+        // },
         {
             "label": "build-server",
             "type": "shell",
@@ -27,7 +27,7 @@
                 "-lws2_32"
             ],
             "problemMatcher": ["$gcc"],
-            "dependsOn": ["kill-server"]
+            // "dependsOn": ["kill-server"]
         },
         {
             "label": "build-client",
@@ -41,7 +41,7 @@
                 "-lws2_32"
             ],
             "problemMatcher": ["$gcc"],
-            "dependsOn": ["kill-client"]
+            // "dependsOn": ["kill-client"]
         },
         {
             "label": "build-all",
