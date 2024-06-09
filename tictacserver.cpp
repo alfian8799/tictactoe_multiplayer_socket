@@ -437,9 +437,9 @@ int main() {
             publicBoard.printCheckPlayer();
             publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
             if (publicBoard.checkCurrentPlayerID() == serverPlayerID) {
-                std::cout << "Type a number to put your mark there: ";
+                std::cout << "Ketik nomor untuk menempatkan tanda : ";
             } else {
-                std::cout << "Wait for other player's turn     ";
+                std::cout << "Tunggu, giliran pemain lain    ";
             }
         } else {
             publicBoard.printWinner(true);
