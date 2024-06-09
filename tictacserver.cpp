@@ -152,11 +152,11 @@ class TicTacToeBoard {
                 togglePlayerTurn();
                 failedMove = false;
             } else { // placing mark on occupied square
-                failedMoveMessage = "That space is already occupied, choose another!";
+                failedMoveMessage =  "Sudah terisi, pilih yang lain!";
                 failedMove = true;
             }
         } else {
-            failedMoveMessage = "Please choose number between 1-9!";
+            failedMoveMessage = "Silakan pilih angka antara 1-9!";
             failedMove = true; // input isn't between 1-9
         }
     }
@@ -227,20 +227,20 @@ class TicTacToeBoard {
         if (winningState){
             if (!opposite) {
                 std::cout << std::endl << "Player #" << checkCurrentPlayerID()
-                << ", " << checkCurrentPlayerName() << ", is the winner!" << std::endl;
+                << ", " << checkCurrentPlayerName() << ", menang" << std::endl;
             } else {
                 std::cout << std::endl << "Player #" << checkOppositePlayerID()
-                << ", " << checkOppositePlayerName() << ", is the winner!" << std::endl;
+                << ", " << checkOppositePlayerName() << ", menang" << std::endl;
             }
-            printf("A straight line at square %d, %d, and %d!\n",
-            winningSquares[0], winningSquares[1], winningSquares[2]);
+            // printf("A straight line at square %d, %d, and %d!\n",
+            // winningSquares[0], winningSquares[1], winningSquares[2]);
         } else if (drawState){
-            std::cout << std::endl << "No more space left, it's a draw!" << std::endl << std::endl;
+            std::cout << std::endl << "Tidak ada ruang lagi, seri!" << std::endl << std::endl;
         }
     }
 
     void printCheckPlayer(){
-        printf("Currently it's Player #%d (%s's) turn!\n", checkCurrentPlayerID(), checkCurrentPlayerName().c_str());
+        printf("Saat ini giliran Pemain #%d (%s)!\n", checkCurrentPlayerID(), checkCurrentPlayerName().c_str());
     }
 
     void printAdditionalInfo(){
@@ -251,18 +251,20 @@ class TicTacToeBoard {
     }
 
     void printTitle(){
-        std::cout << "Ether's TicTacToe" << std::endl << std::endl;
-        printf("Player #%d (%s): %s   /   Player #%d (%s): %s \n\n", 
+        std::cout << "TicTacToe" << std::endl << std::endl;
+        printf("Player 1 #%d (%s): %s   /   Player 2 #%d (%s): %s \n\n", 
         firstPlayer.getID(), firstPlayer.getName().c_str(), firstPlayer.getSymbol().c_str(),
         secondPlayer.getID(), secondPlayer.getName().c_str(), secondPlayer.getSymbol().c_str());
     }
 
     void printBoard(){
-        std::cout << "||||   ||   ||   ||   ||||" << std::endl;
-        printf("||||   %c    %c    %c    ||||\n", chr(1), chr(2), chr(3));
-        printf("||||   %c    %c    %c    ||||\n", chr(4), chr(5), chr(6));
-        printf("||||   %c    %c    %c    ||||\n", chr(7), chr(8), chr(9));
-        std::cout << "||||   ||   ||   ||   ||||" << std::endl << std::endl;
+        std::cout << "|-----------------|" << std::endl;
+        printf("|   %c    %c    %c   |\n", chr(1), chr(2), chr(3));
+        std::cout << "|-----------------|" << std::endl;
+        printf("|   %c    %c    %c   |\n", chr(4), chr(5), chr(6));
+        std::cout << "|-----------------|" << std::endl;
+        printf("|   %c    %c    %c   |\n", chr(7), chr(8), chr(9));
+        std::cout << "|-----------------|" << std::endl << std::endl;
     }
 
     private:
@@ -313,7 +315,7 @@ void receiveMessages(SOCKET ClientSocket) {
                     publicBoard.printBoard();
                     publicBoard.printCheckPlayer();
                     publicBoard.printAdditionalInfo(); // tell if the player fails to mark before
-                    std::cout << "Type a number to put your mark there: ";
+                    std::cout << "Masukan nomor untuk menempatkan tanda: ";
                 } else {
                     publicBoard.printWinner(true);
                 }
