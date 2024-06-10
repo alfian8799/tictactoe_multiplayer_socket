@@ -307,7 +307,7 @@ void receiveMessages(SOCKET ClientSocket) {
                 publicBoard.checkWinner();
                 publicBoard.checkDraw();
             }
-            std::cout << "\nReceived: " << message << std::endl;
+            std::cout << "\nMemasukan No: " << message << std::endl;
             if (publicBoard.checkCurrentPlayerID() == serverPlayerID) {
                 if (!publicBoard.isGameOver()){
                     std::cout << std::endl;
